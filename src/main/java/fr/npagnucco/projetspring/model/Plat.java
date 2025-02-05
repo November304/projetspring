@@ -34,6 +34,7 @@ public class Plat {
     private List<Menu> menus;
 
     public Plat() {
+        this(null,null,0,0,0,0,"");
     }
 
     public Plat(Categorie categorie, List<Menu> menus, int nb_calories, int nb_glucides, int nb_lipides, int nb_proteines, String nom) {

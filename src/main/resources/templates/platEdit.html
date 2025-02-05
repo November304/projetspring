@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{_layout.html::header(~{::title}, _, _)}">
+    <title>Modification d'un plat</title>
+</head>
+<body>
+    <nav th:replace="~{_layout.html:: menu}"></nav>
+    <div class="container mt-5">
+
+        <div class="card border-light m-2 p-2">
+            <h1 th:if="${plat.id==null}" class="card-header">Création d'un plat</h1>
+            <h1 th:if="${plat.id!=null}" class="card-header">Modification d'un plat</h1>
+
+            <form th:action="@{/platSave}" method="post" th:object="${plat}">
+                <input type="hidden" name="p" th:value="${p}">
+                <input type="hidden" name="s" th:value="${s}">
+                <input type="hidden" name="mc" th:value="${mc}">
+
+                <input type="hidden" name="id" th:field="*{id}">
+
+                <div class="form-group">
+                    <label for="nom">Nom du plat:</label>
+                    <input type="text" id="nom" name="nom" class="form-control" th:field="*{nom}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nb_calories">Nombre de calories:</label>
+                    <input type="number" id="nb_calories" name="nb_calories" class="form-control" th:field="*{nb_calories}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nb_glucides">Nombre de glucides:</label>
+                    <input type="number" id="nb_glucides" name="nb_glucides" class="form-control" th:field="*{nb_glucides}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nb_lipides">Nombre de lipides:</label>
+                    <input type="number" id="nb_lipides" name="nb_lipides" class="form-control" th:field="*{nb_lipides}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nb_proteines">Nombre de protéines:</label>
+                    <input type="number" id="nb_proteines" name="nb_proteines" class="form-control" th:field="*{nb_proteines}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="categorie">Catégorie:</label>
+                    <select id="categorie" name="categorie" class="form-control" th:field="*{categorie}" required>
+                        <option value="" disabled selected>Choisir une catégorie</option>
+                        <option th:each="categorie : ${categories}" th:value="${categorie.id}" th:text="${categorie.nom}"></option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+            </form>
+
+        </div>
+        
+
+    </div>
+</body>
+</html>
