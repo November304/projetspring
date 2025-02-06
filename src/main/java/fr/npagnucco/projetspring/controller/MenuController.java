@@ -59,7 +59,7 @@ public class MenuController {
     }
 
     @GetMapping("/menuDelete")
-    public String deleteMenu(int id, int p, int s , String mc, RedirectAttributes attributes) {
+    public String deleteMenu(Long id, int p, int s , String mc, RedirectAttributes attributes) {
         this.repoMenu.deleteById(id);
         attributes.addAttribute("p", p);
         attributes.addAttribute("s", s);
@@ -70,7 +70,7 @@ public class MenuController {
     @GetMapping("/menuEdit")
     public String editerMenu(
         String mc,int p,int s,
-        int id,
+        Long id,
         Model model
     ) 
     {

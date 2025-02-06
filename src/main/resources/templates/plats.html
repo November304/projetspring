@@ -11,15 +11,24 @@
 <body>
     <nav th:replace="~{_layout.html:: menu}"></nav>
     <div class="container mt-5">
-        <form action="#" th:action="@{/plats}" method="get" class="table">
+        <form th:action="@{/plats}" method="get" class="table">
             <div class="d-flex align-items-center gap-3">
-                <input type="text" name="mc" id="search" class="form-control" th:value="${mc}" />
+                <label for="cid">Catégorie :</label>
+                <input type="number" name="cid" id="cid" class="form-control" th:value="${cid}" />
+                
+                <label for="mincal">Calories min :</label>
+                <input type="number" name="mincal" id="mincal" class="form-control" th:value="${mincal}" />
+                
+                <label for="maxcal">Calories max :</label>
+                <input type="number" name="maxcal" id="maxcal" class="form-control" th:value="${maxcal}" />
+                
                 <input type="hidden" name="p" th:value="0" />
                 <input type="hidden" name="s" th:value="${page.size}" />
-                <button type="submit" class="btn btn-primary">Rechercher</button>
+                
+                <button type="submit" class="btn btn-primary">Filtrer</button>
             </div>
         </form>
-        <a th:href="@{/platEdit(s=${page.size},p=${page.number},mc=${motCle})}" class="btn btn-primary">Ajouter un plat</a>
+        <a th:href="@{/platEdit(s=${page.size},p=${page.number})}" class="btn btn-primary">Ajouter un plat</a>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -43,8 +52,8 @@
                     <td th:text="${p.nb_proteines}"></td>
                     <td th:text="${p.categorie.nom}"></td>
                     <td>
-                        <a class="btn btn-primary" th:href="@{/platEdit(id=${p.id},s=${page.size},p=${page.number},mc=${motCle})}"><i class="fa-regular fa-pen-to-square"></i></a>
-                        <a class="btn btn-warning" onclick="confDelPlat(event)" th:href="@{/produitDelete(id=${p.id},s=${page.size},p=${0},mc=${motCle})}"><i class="fa-regular fa-trash-can"></i></a>
+                        <a class="btn btn-primary" th:href="@{/platEdit(id=${p.id},s=${page.size},p=${page.number})}"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <a class="btn btn-warning" onclick="confDelPlat(event)" th:href="@{/produitDelete(id=${p.id},s=${page.size},p=${0})}"><i class="fa-regular fa-trash-can"></i></a>
                     </td>
                 </tr>
             </tbody>
@@ -53,17 +62,17 @@
         <nav>
             <ul class="pagination">
             <li th:class="${page.first ? 'page-item disabled' : 'page-item'}">
-                <a class="page-link" th:href="@{/plats(s=${page.size},p=${page.number-1},mc=${motCle})}" aria-label="Préc.">
+                <a class="page-link" th:href="@{/plats(s=${page.size},p=${page.number-1})}" aria-label="Préc.">
                 <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
 
             <li th:class="page-item" th:each="i : ${#numbers.sequence(0,page.totalPages-1)}" th:classappend="${i == page.number ? 'active' : ''}">
-                <a class="page-link" th:href="@{/plats(s=${page.size},p=${i},mc=${motCle})}" th:text="${i+1}"> 1</a>
+                <a class="page-link" th:href="@{/plats(s=${page.size},p=${i})}" th:text="${i+1}"> 1</a>
             </li>
 
             <li th:class="${page.last ? 'page-item disabled' : 'page-item'}">
-                <a class="page-link" th:href="@{/plats(s=${page.size},p=${page.number+1},mc=${motCle})}" aria-label="Suiv.">
+                <a class="page-link" th:href="@{/plats(s=${page.size},p=${page.number+1})}" aria-label="Suiv.">
                 <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>

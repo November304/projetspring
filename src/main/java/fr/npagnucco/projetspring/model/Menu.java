@@ -18,7 +18,7 @@ import jakarta.persistence.ManyToMany;
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String nom;
     private double prix;
     private String description;
@@ -40,11 +40,11 @@ public class Menu {
         this.prix = prix;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -34,7 +34,6 @@ public class PlatController {
 
     @GetMapping("/plats")
     public String listePlats(
-        @RequestParam(defaultValue = "") String mc,
         @RequestParam(defaultValue = "0") int p,
         @RequestParam(defaultValue = "10") int s, 
         Model model
@@ -43,36 +42,34 @@ public class PlatController {
         Pageable pageable = PageRequest.of(p, s);
         Page<Plat> plats;
 
-        if(!mc.isEmpty())
-        {
-            //TODO 
-            // plats = repoPlat.rechercher("%"+motCle+"%", pageable);
+        // if(!mc.isEmpty())
+        // {
+        //     //TODO 
+        //     // plats = repoPlat.rechercher("%"+motCle+"%", pageable);
+        //     plats = repoPlat.findAll(pageable);
+        // }
+        // else 
+        // {
             plats = repoPlat.findAll(pageable);
-        }
-        else 
-        {
-            plats = repoPlat.findAll(pageable);
-        }
+        // }
 
         model.addAttribute("plats", plats.getContent());
         model.addAttribute("page",plats);
-        model.addAttribute("motCle", mc);
         return "plats";
     }
 
     @GetMapping("/platDelete")
-    public String deletePlat(int id, int p, int s , String mc, RedirectAttributes attributes) {
+    public String deletePlat(Long id, int p, int s , RedirectAttributes attributes) {
         this.repoPlat.deleteById(id);
         attributes.addAttribute("p", p);
         attributes.addAttribute("s", s);
-        attributes.addAttribute("mc", mc);
         return "redirect:/plats";
     }
 
     @GetMapping("/platEdit")
     public String editerPlat(
-        String mc,int p,int s,
-        int id,
+        int p,int s,
+        Long id,
         Model model
     ) 
     {
@@ -94,7 +91,6 @@ public class PlatController {
 
         
         model.addAttribute("categories", this.repoCategorie.findAll());
-        model.addAttribute("mc", mc);
         model.addAttribute("p", p);
         model.addAttribute("s", s);
 
@@ -102,9 +98,9 @@ public class PlatController {
     }
     
     @PostMapping("/platSave")
-    public String sauverPlat(Plat produit, int p, int s, String mc) {
+    public String sauverPlat(Plat produit, int p, int s) {
 
         this.repoPlat.save(produit);
-        return "redirect:/plats?p="+p+"&s="+s+"&mc="+mc;
+        return "redirect:/plats?p="+p+"&s="+s;
     }
 }

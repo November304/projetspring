@@ -19,7 +19,7 @@ public class Plat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String nom;
     private int nb_calories;
     private int nb_glucides;
@@ -47,11 +47,11 @@ public class Plat {
         this.nom = nom;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
