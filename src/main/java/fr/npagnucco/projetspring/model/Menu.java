@@ -80,7 +80,15 @@ public class Menu {
         this.plats = plats;
     }
 
-
+    public int getNbCalories()
+    {
+        int nbCalories = 0;
+        for(Plat plat : plats)
+        {
+            nbCalories += plat.getNb_calories();
+        }
+        return nbCalories;
+    }
 
 
 

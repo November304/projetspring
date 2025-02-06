@@ -11,16 +11,15 @@
 <body>
     <nav th:replace="~{_layout.html:: menu}"></nav>
     <div class="container mt-5">
-        <form action="#" th:action="@{/plats}" method="get">
-            <div class="form-group">
-              <label for="search">Recherche : </label>
-              <input type="text" name="mc" id="search" class="form-control" th:value="${mc}" />
-              <input type="hidden" name="p" th:value="0" />
-              <input type="hidden" name="s" th:value="${page.size}" />
+        <form action="#" th:action="@{/plats}" method="get" class="table">
+            <div class="d-flex align-items-center gap-3">
+                <input type="text" name="mc" id="search" class="form-control" th:value="${mc}" />
+                <input type="hidden" name="p" th:value="0" />
+                <input type="hidden" name="s" th:value="${page.size}" />
+                <button type="submit" class="btn btn-primary">Rechercher</button>
             </div>
-            <button type="submit" class="btn btn-primary">Rechercher</button>
-        </form>  
-        <!-- <a th:href="@{/platEdit(s=${page.size},p=${page.number},mc=${motCle})}" class="btn btn-primary">Ajouter un produit</a> -->
+        </form>
+        <a th:href="@{/platEdit(s=${page.size},p=${page.number},mc=${motCle})}" class="btn btn-primary">Ajouter un plat</a>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -45,7 +44,7 @@
                     <td th:text="${p.categorie.nom}"></td>
                     <td>
                         <a class="btn btn-primary" th:href="@{/platEdit(id=${p.id},s=${page.size},p=${page.number},mc=${motCle})}"><i class="fa-regular fa-pen-to-square"></i></a>
-                        <a class="btn btn-warning" onclick="confDelPlat(event)" th:href="@{/produitDelete(id=${p.id},s=${page.size},p=${page.number},mc=${motCle})}"><i class="fa-regular fa-trash-can"></i></a>
+                        <a class="btn btn-warning" onclick="confDelPlat(event)" th:href="@{/produitDelete(id=${p.id},s=${page.size},p=${0},mc=${motCle})}"><i class="fa-regular fa-trash-can"></i></a>
                     </td>
                 </tr>
             </tbody>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head th:replace="~{_layout.html::header(~{::title}, _, ~{::script})}">
-    <title>Liste des plats</title>
+    <title>Liste des menus</title>
     <script>
-        function confDelPlat(e){
+        function confDelMenu(e){
             if(!confirm('Voulez-vous vraiment supprimer ce plat ?')) e.preventDefault();
         }
     </script>
@@ -11,41 +11,34 @@
 <body>
     <nav th:replace="~{_layout.html:: menu}"></nav>
     <div class="container mt-5">
-        <form action="#" th:action="@{/plats}" method="get">
-            <div class="form-group">
-              <label for="search">Recherche : </label>
-              <input type="text" name="mc" id="search" class="form-control" th:value="${mc}" />
-              <input type="hidden" name="p" th:value="0" />
-              <input type="hidden" name="s" th:value="${page.size}" />
+        <form action="#" th:action="@{/menus}" method="get" class="table">
+            <div class="d-flex align-items-center gap-3">
+                <input type="text" name="mc" id="search" class="form-control" th:value="${mc}" />
+                <input type="hidden" name="p" th:value="0" />
+                <input type="hidden" name="s" th:value="${page.size}" />
+                <button type="submit" class="btn btn-primary">Rechercher</button>
             </div>
-            <button type="submit" class="btn btn-primary">Rechercher</button>
-        </form>  
-        <!-- <a th:href="@{/platEdit(s=${page.size},p=${page.number},mc=${motCle})}" class="btn btn-primary">Ajouter un produit</a> -->
+        </form> 
+        <a th:href="@{/menuEdit(s=${page.size},p=${page.number},mc=${motCle})}" class="btn btn-primary">Ajouter un menu</a>
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Id</th>
                     <th>Nom</th>
-                    <th>Calories</th>
-                    <th>Glucides</th>
-                    <th>Lipides</th>
-                    <th>Protéines</th>
-                    <th>Catégorie</th>
+                    <th>Prix</th>
+                    <th>Nombre de calories</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="p : ${plats}">
-                    <td th:text="${p.id}"></td>
-                    <td th:text="${p.nom}"></td>
-                    <td th:text="${p.nb_calories}"></td>
-                    <td th:text="${p.nb_glucides}"></td>
-                    <td th:text="${p.nb_lipides}"></td>
-                    <td th:text="${p.nb_proteines}"></td>
-                    <td th:text="${p.categorie.nom}"></td>
+                <tr th:each="m : ${menus}">
+                    <td th:text="${m.id}"></td>
+                    <td th:text="${m.nom}"></td>
+                    <td th:text="${m.prix}"></td>
+                    <td th:text="${m.getNbCalories()}"></td>
                     <td>
-                        <a class="btn btn-primary" th:href="@{/platEdit(id=${p.id},s=${page.size},p=${page.number},mc=${motCle})}"><i class="fa-regular fa-pen-to-square"></i></a>
-                        <a class="btn btn-warning" onclick="confDelPlat(event)" th:href="@{/produitDelete(id=${p.id},s=${page.size},p=${page.number},mc=${motCle})}"><i class="fa-regular fa-trash-can"></i></a>
+                        <a class="btn btn-primary" th:href="@{/menuEdit(id=${m.id},s=${page.size},p=${page.number},mc=${motCle})}"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <a class="btn btn-warning" onclick="confDelMenu(event)" th:href="@{/menuDelete(id=${m.id},s=${page.size},p=${page.number},mc=${motCle})}"><i class="fa-regular fa-trash-can"></i></a>
                     </td>
                 </tr>
             </tbody>
@@ -54,26 +47,26 @@
         <nav>
             <ul class="pagination">
             <li th:class="${page.first ? 'page-item disabled' : 'page-item'}">
-                <a class="page-link" th:href="@{/plats(s=${page.size},p=${page.number-1},mc=${motCle})}" aria-label="Préc.">
+                <a class="page-link" th:href="@{/menus(s=${page.size},p=${page.number-1},mc=${motCle})}" aria-label="Préc.">
                 <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
 
             <li th:class="page-item" th:each="i : ${#numbers.sequence(0,page.totalPages-1)}" th:classappend="${i == page.number ? 'active' : ''}">
-                <a class="page-link" th:href="@{/plats(s=${page.size},p=${i},mc=${motCle})}" th:text="${i+1}"> 1</a>
+                <a class="page-link" th:href="@{/menus(s=${page.size},p=${i},mc=${motCle})}" th:text="${i+1}"> 1</a>
             </li>
 
             <li th:class="${page.last ? 'page-item disabled' : 'page-item'}">
-                <a class="page-link" th:href="@{/plats(s=${page.size},p=${page.number+1},mc=${motCle})}" aria-label="Suiv.">
+                <a class="page-link" th:href="@{/menus(s=${page.size},p=${page.number+1},mc=${motCle})}" aria-label="Suiv.">
                 <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
             </ul>
         </nav>
         </div>  
-        <form action="#" th:action="@{/plats}" method="get">
+        <form action="#" th:action="@{/menus}" method="get">
         <div class="form-group">
-            <label for="size">Plats par page : </label>
+            <label for="size">Menus par page : </label>
             <select name="s" id="size" onchange="this.form.submit()">
             <option value="5" th:selected="${page.size ==5}">5</option>
             <option value="10" th:selected="${page.size ==10}">10</option>

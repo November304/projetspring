@@ -9,9 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.npagnucco.projetspring.model.Plat;
+import fr.npagnucco.projetspring.repository.CategorieRepository;
 import fr.npagnucco.projetspring.repository.PlatRepository;
 
 
@@ -23,13 +25,21 @@ import fr.npagnucco.projetspring.repository.PlatRepository;
 @Controller
 public class PlatController {
     private final PlatRepository repoPlat;
+    private final CategorieRepository repoCategorie;
 
-    public PlatController(PlatRepository platRepository) {
+    public PlatController(PlatRepository platRepository, CategorieRepository categorieRepository) {
         this.repoPlat = platRepository;
+        this.repoCategorie = categorieRepository;
     }
 
     @GetMapping("/plats")
-    public String listePlats(String mc, int p, int s, Model model) {
+    public String listePlats(
+        @RequestParam(defaultValue = "") String mc,
+        @RequestParam(defaultValue = "0") int p,
+        @RequestParam(defaultValue = "10") int s, 
+        Model model
+    ) 
+    {
         Pageable pageable = PageRequest.of(p, s);
         Page<Plat> plats;
 
@@ -51,7 +61,7 @@ public class PlatController {
     }
 
     @GetMapping("/platDelete")
-    public String getMethodName(int id, int p, int s , String mc, RedirectAttributes attributes) {
+    public String deletePlat(int id, int p, int s , String mc, RedirectAttributes attributes) {
         this.repoPlat.deleteById(id);
         attributes.addAttribute("p", p);
         attributes.addAttribute("s", s);
@@ -60,7 +70,7 @@ public class PlatController {
     }
 
     @GetMapping("/platEdit")
-    public String editerProduit(
+    public String editerPlat(
         String mc,int p,int s,
         int id,
         Model model
@@ -82,6 +92,8 @@ public class PlatController {
             model.addAttribute("plat", new Plat());
         }
 
+        
+        model.addAttribute("categories", this.repoCategorie.findAll());
         model.addAttribute("mc", mc);
         model.addAttribute("p", p);
         model.addAttribute("s", s);
@@ -90,7 +102,7 @@ public class PlatController {
     }
     
     @PostMapping("/platSave")
-    public String sauverProduit(Plat produit, int p, int s, String mc) {
+    public String sauverPlat(Plat produit, int p, int s, String mc) {
 
         this.repoPlat.save(produit);
         return "redirect:/plats?p="+p+"&s="+s+"&mc="+mc;
