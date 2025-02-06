@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -25,23 +25,23 @@ public class Plat {
     private Long id;
 
     @NotNull
-    @Size(min = 2, max = 70)
+    @Size(min = 2, max = 50, message="Le nom du plat doit contenir entre 2 et 50 caractères")
     private String nom;
 
-    @NotNull
-    @DecimalMin("0")
+    @NotNull(message="Le nombre de calories ne peut pas être vide")
+    @Min(value=0, message="Le nombre de calories doit être positif ou nul")
     private int nb_calories;
 
-    @NotNull
-    @DecimalMin("0")
+    @NotNull(message="Le nombre de glucides ne peut pas être vide")
+    @Min(value=0, message="Le nombre de glucides doit être positif ou nul")
     private int nb_glucides;
 
-    @NotNull
-    @DecimalMin("0")
+    @NotNull(message="Le nombre de lipides ne peut pas être vide")
+    @Min(value=0, message="Le nombre de lipides doit être positif ou nul")
     private int nb_lipides;
 
-    @NotNull
-    @DecimalMin("0")
+    @NotNull(message="Le nombre de protéines ne peut pas être vide")
+    @Min(value=0, message="Le nombre de protéines doit être positif ou nul")
     private int nb_proteines;
 
     @ManyToOne

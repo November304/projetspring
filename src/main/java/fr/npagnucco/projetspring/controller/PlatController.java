@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import fr.npagnucco.projetspring.model.Plat;
 import fr.npagnucco.projetspring.repository.CategorieRepository;
 import fr.npagnucco.projetspring.repository.PlatRepository;
+import jakarta.validation.Valid;
 
 
 
@@ -78,6 +80,7 @@ public class PlatController {
         RedirectAttributes attributes
     ) {
         this.repoPlat.deleteById(id);
+        attributes.addAttribute("action","del");
         attributes.addAttribute("p", p);
         attributes.addAttribute("s", s);
         attributes.addAttribute("cid", cid);
@@ -93,7 +96,7 @@ public class PlatController {
         Model model
     ) 
     {
-        if(id>0)
+        if(id!=null)
         {
             Optional<Plat> optPlat = this.repoPlat.findById(id);
             if(optPlat.isPresent())
@@ -120,8 +123,19 @@ public class PlatController {
     }
     
     @PostMapping("/platSave")
-    public String sauverPlat(Plat plat, int p, int s,Long cid, Long mincal, Long maxcal,RedirectAttributes attributes) {
-
+    public String sauverPlat(int p, int s,Long cid, Long mincal, Long maxcal,@Valid Plat plat,BindingResult bindingResult,Model model, RedirectAttributes attributes) {
+        System.out.println(bindingResult);
+        if(bindingResult.hasErrors())
+        {
+            model.addAttribute("plat", plat);
+            model.addAttribute("categories", this.repoCategorie.findAll());
+            model.addAttribute("p", p);
+            model.addAttribute("s", s);
+            model.addAttribute("cid", cid);
+            model.addAttribute("mincal", mincal);
+            model.addAttribute("maxcal", maxcal);
+            return "platEdit";
+        }
         String action = (plat.getId()!=null?"mod":"new");
         this.repoPlat.save(plat);
         attributes.addAttribute("action",action);

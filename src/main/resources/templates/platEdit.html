@@ -20,35 +20,47 @@
 
                 <div class="form-group">
                     <label for="nom">Nom du plat:</label>
-                    <input type="text" id="nom" name="nom" class="form-control" th:field="*{nom}" required>
+                    <input type="text" id="nom" name="nom" th:field="*{nom}" required 
+                           th:class="${#fields.hasErrors('nom')} ? 'form-control is-invalid' : 'form-control'">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="nb_calories">Nombre de calories:</label>
-                    <input type="number" id="nb_calories" name="nb_calories" class="form-control" th:field="*{nb_calories}" required>
+                    <input type="number" id="nb_calories" name="nb_calories" th:field="*{nb_calories}" required 
+                           th:class="${#fields.hasErrors('nb_calories')} ? 'form-control is-invalid' : 'form-control'">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nb_calories')}" th:errors="*{nb_calories}"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="nb_glucides">Nombre de glucides:</label>
-                    <input type="number" id="nb_glucides" name="nb_glucides" class="form-control" th:field="*{nb_glucides}" required>
+                    <input type="number" id="nb_glucides" name="nb_glucides" th:field="*{nb_glucides}" required 
+                           th:class="${#fields.hasErrors('nb_glucides')} ? 'form-control is-invalid' : 'form-control'">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nb_glucides')}" th:errors="*{nb_glucides}"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="nb_lipides">Nombre de lipides:</label>
-                    <input type="number" id="nb_lipides" name="nb_lipides" class="form-control" th:field="*{nb_lipides}" required>
+                    <input type="number" id="nb_lipides" name="nb_lipides" th:field="*{nb_lipides}" required 
+                           th:class="${#fields.hasErrors('nb_lipides')} ? 'form-control is-invalid' : 'form-control'">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nb_lipides')}" th:errors="*{nb_lipides}"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="nb_proteines">Nombre de protéines:</label>
-                    <input type="number" id="nb_proteines" name="nb_proteines" class="form-control" th:field="*{nb_proteines}" required>
+                    <input type="number" id="nb_proteines" name="nb_proteines" th:field="*{nb_proteines}" required  
+                           th:class="${#fields.hasErrors('nb_proteines')} ? 'form-control is-invalid' : 'form-control'">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nb_proteines')}" th:errors="*{nb_proteines}"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="categorie">Catégorie:</label>
-                    <select id="categorie" name="categorie" class="form-control" th:field="*{categorie}" required>
+                    <select id="categorie" name="categorie" th:field="*{categorie}" required 
+                           th:class="${#fields.hasErrors('categorie')} ? 'form-control is-invalid' : 'form-control'">
                         <option value="" disabled selected>Choisir une catégorie</option>
                         <option th:each="categorie : ${categories}" th:value="${categorie.id}" th:text="${categorie.nom}"></option>
                     </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('categorie')}" th:errors="*{categorie}"></div>
                 </div>
                 
                 <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
