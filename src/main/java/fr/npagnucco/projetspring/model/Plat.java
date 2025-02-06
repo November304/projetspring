@@ -9,6 +9,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 /**
  * Entité qui représente un plat en base de données.
@@ -20,10 +23,25 @@ public class Plat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @Size(min = 2, max = 70)
     private String nom;
+
+    @NotNull
+    @DecimalMin("0")
     private int nb_calories;
+
+    @NotNull
+    @DecimalMin("0")
     private int nb_glucides;
+
+    @NotNull
+    @DecimalMin("0")
     private int nb_lipides;
+
+    @NotNull
+    @DecimalMin("0")
     private int nb_proteines;
 
     @ManyToOne

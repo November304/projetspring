@@ -11,11 +11,25 @@
 <body>
     <nav th:replace="~{_layout.html:: menu}"></nav>
     <div class="container mt-5">
+        <div class="alert alert-dismissible alert-success" th:if="${action=='new' || action=='mod'}" >
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <p th:if="${action=='new'}">Le produit <strong th:text="${produit.designation}" /> a bien été créé au prix de <span th:text="${#numbers.formatDecimal(produit.prix,1,2,'COMMA')+' &euro;'}"/>
+            </p>
+            <p th:if="${action=='mod'}">Le produit <strong th:text="${produit.designation}" /> a bien été modifié au prix de <span th:text="${#numbers.formatDecimal(produit.prix,1,2,'COMMA')+' &euro;'}"/>
+            </p>
+            </div>
+            <div class="alert alert-dismissible alert-warning" th:if="${action=='del'}">
+            <button type="button" class="btn-close" data-bs-dismiss="alert">
+            </button>
+            Le produit a bien été supprimé
+        </div>
         <form th:action="@{/plats}" method="get" class="table">
             <div class="d-flex align-items-center gap-3">
                 <label for="cid">Catégorie :</label>
-                <input type="number" name="cid" id="cid" class="form-control" th:value="${cid}" />
-                
+                    <select id="cid" name="cid" class="form-control">
+                        <option value="" disabled selected>Choisir une catégorie</option>
+                        <option th:each="categorie : ${categories}" th:value="${categorie.id}" th:text="${categorie.nom}"></option>
+                    </select>
                 <label for="mincal">Calories min :</label>
                 <input type="number" name="mincal" id="mincal" class="form-control" th:value="${mincal}" />
                 
@@ -80,18 +94,18 @@
         </nav>
         </div>  
         <form action="#" th:action="@{/plats}" method="get">
-        <div class="form-group">
-            <label for="size">Plats par page : </label>
-            <select name="s" id="size" onchange="this.form.submit()">
-            <option value="5" th:selected="${page.size ==5}">5</option>
-            <option value="10" th:selected="${page.size ==10}">10</option>
-            <option value="15" th:selected="${page.size ==15}">15</option>
-            <option value="20" th:selected="${page.size ==20}">20</option>
-            </select>
-        </div>
-        
-        <input type="hidden" name="p" th:value="${page.number}" />
-        
+            <div class="form-group">
+                <label for="size">Plats par page : </label>
+                <select name="s" id="size" onchange="this.form.submit()">
+                <option value="5" th:selected="${page.size ==5}">5</option>
+                <option value="10" th:selected="${page.size ==10}">10</option>
+                <option value="15" th:selected="${page.size ==15}">15</option>
+                <option value="20" th:selected="${page.size ==20}">20</option>
+                </select>
+            </div>
+            
+            <input type="hidden" name="p" th:value="${page.number}" />
+            
 
         </form>        
     </div>

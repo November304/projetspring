@@ -14,7 +14,7 @@ import fr.npagnucco.projetspring.model.Plat;
  */
 public interface PlatRepository extends JpaRepository<Plat, Long> {
     @Query("SELECT p FROM Plat p WHERE (:cid is NULL OR p.categorie.id = :cid) AND (:mincal IS NULL OR p.nb_calories>:mincal) AND (:maxcal IS NULL OR p.nb_calories<:maxcal)")
-    Page<Plat> findByFiltre(@Param("cid") Integer cid,@Param("mincal") Integer mincal,@Param("maxcal") Integer maxcal, Pageable pageable);
+    Page<Plat> findByFiltre(@Param("cid") Long cid,@Param("mincal") Long mincal,@Param("maxcal") Long maxcal, Pageable pageable);
 
 
 }
