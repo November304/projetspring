@@ -65,7 +65,7 @@ public class PlatController {
         model.addAttribute("mincal", mincal);
         model.addAttribute("maxcal", maxcal);
         if ( id>0 && (action.equals("new") || action.equals("mod")) ) {
-            model.addAttribute("produit",
+            model.addAttribute("plat",
             this.repoPlat.getReferenceById(id) );
         } else if ( ! action.equals("del") ) {
             action = "";
@@ -80,7 +80,7 @@ public class PlatController {
         RedirectAttributes attributes
     ) {
         this.repoPlat.deleteById(id);
-        attributes.addAttribute("action","del");
+        attributes.addAttribute("act","del");
         attributes.addAttribute("p", p);
         attributes.addAttribute("s", s);
         attributes.addAttribute("cid", cid);
@@ -138,7 +138,7 @@ public class PlatController {
         }
         String action = (plat.getId()!=null?"mod":"new");
         this.repoPlat.save(plat);
-        attributes.addAttribute("action",action);
+        attributes.addAttribute("act",action);
         attributes.addAttribute("id", plat.getId());
         attributes.addAttribute("p", p);
         attributes.addAttribute("s", s);

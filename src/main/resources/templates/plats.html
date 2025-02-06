@@ -13,14 +13,16 @@
     <div class="container mt-5">
         <div class="alert alert-dismissible alert-success" th:if="${action=='new' || action=='mod'}" >
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <p th:if="${action=='new'}">Le produit <strong th:text="${produit.designation}"> a bien été créé au prix de <span th:text="${#numbers.formatDecimal(produit.prix,1,2,'COMMA')+' &euro;'}"/>
+            <p th:if="${action=='new'}">
+                Le plat <strong th:text="${plat.nom}"></strong> a bien été créé
             </p>
-            <p th:if="${action=='mod'}">Le produit <strong th:text="${produit.designation}"> a bien été modifié au prix de <span th:text="${#numbers.formatDecimal(produit.prix,1,2,'COMMA')+' &euro;'}"/>
+            <p th:if="${action=='mod'}">
+                Le plat <strong th:text="${plat.nom}"></strong> a bien été modifié
             </p>
         </div>
         <div class="alert alert-dismissible alert-warning" th:if="${action=='del'}">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            Le produit a bien été supprimé
+            Le plat a bien été supprimé
         </div>
         <form th:action="@{/plats}" method="get" class="table">
             <div class="d-flex align-items-center gap-3">
