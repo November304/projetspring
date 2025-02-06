@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 
 /**
  * Entité qui représente un plat en base de données.
@@ -26,7 +26,7 @@ public class Plat {
     private int nb_lipides;
     private int nb_proteines;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "categorie_id")
     private Categorie categorie;
 

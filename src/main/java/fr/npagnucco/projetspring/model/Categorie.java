@@ -1,9 +1,12 @@
 package fr.npagnucco.projetspring.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 /**
  * Entité qui représente une catégorie en base de données.
@@ -16,6 +19,9 @@ public class Categorie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nom;
+
+    @OneToMany(mappedBy = "categorie")
+    private List<Plat> plats;
 
     public Categorie() {
     }
