@@ -124,7 +124,6 @@ public class PlatController {
     
     @PostMapping("/platSave")
     public String sauverPlat(int p, int s,Long cid, Long mincal, Long maxcal,@Valid Plat plat,BindingResult bindingResult,Model model, RedirectAttributes attributes) {
-        System.out.println(bindingResult);
         if(bindingResult.hasErrors())
         {
             model.addAttribute("plat", plat);

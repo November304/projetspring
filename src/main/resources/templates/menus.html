@@ -45,6 +45,19 @@
 <body>
     <nav th:replace="~{_layout.html:: menu}"></nav>
     <div class="container mt-5">
+        <div class="alert alert-dismissible alert-success" th:if="${action=='new' || action=='mod'}" >
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <p th:if="${action=='new'}">
+                Le menu <strong th:text="${menu.nom}"></strong> a bien été créé
+            </p>
+            <p th:if="${action=='mod'}">
+                Le menu <strong th:text="${menu.nom}"></strong> a bien été modifié
+            </p>
+        </div>
+        <div class="alert alert-dismissible alert-warning" th:if="${action=='del'}">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            Le menu a bien été supprimé
+        </div>
         <form action="#" th:action="@{/menus}" method="get" class="table">
             <div class="d-flex align-items-center gap-3">
                 <input type="text" name="mc" id="search" class="form-control" th:value="${mc}" />
@@ -82,7 +95,7 @@
                             </a>
                             <a class="btn btn-warning" 
                                onclick="event.stopPropagation(); confDelMenu(event)"
-                               th:href="@{/menuDelete(id=${m.id},s=${page.size},p=${page.number},mc=${motCle})}">
+                               th:href="@{/menuDelete(id=${m.id},s=${page.size},p=0,mc=${motCle})}">
                                 <i class="fa-regular fa-trash-can"></i>
                             </a>
                         </td>
