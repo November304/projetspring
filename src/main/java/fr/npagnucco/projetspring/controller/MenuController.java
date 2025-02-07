@@ -34,7 +34,8 @@ public class MenuController {
 
     @GetMapping("/menus")
     public String listeMenus(
-            @RequestParam(defaultValue = "") String mc,
+            @RequestParam(required = false) String priceRange,
+            @RequestParam(required = false) String mc,
             @RequestParam(defaultValue = "0") int p,
             @RequestParam(defaultValue = "5") int s, 
             @RequestParam(name="act",defaultValue="") String action,
@@ -45,20 +46,33 @@ public class MenuController {
         Pageable pageable = PageRequest.of(p, s);
         Page<Menu> menus;
 
-        if(!mc.isEmpty())
+        if(priceRange!=null || mc != null)
         {
-            //TODO 
-            // plats = repoPlat.rechercher("%"+motCle+"%", pageable);
-            menus = repoMenu.findAll(pageable);
+            Double minPrice = null;
+            Double maxPrice = null;
+            if(priceRange!=null)
+            {
+                String[] parts = priceRange.split("-");
+                if (parts.length == 2) {
+                    try {
+                        minPrice = Double.valueOf(parts[0]);
+                        maxPrice = Double.valueOf(parts[1]);
+                    } catch (NumberFormatException e) {
+                        // Si exception on laisse les valeurs à null
+                    }
+                }
+            }
+            menus = repoMenu.findByFiltre(minPrice, maxPrice, mc, pageable);
         }
         else 
         {
             menus = repoMenu.findAll(pageable);
         }
 
+        model.addAttribute("priceRange", priceRange);
+        model.addAttribute("mc", mc);
         model.addAttribute("menus", menus.getContent());
         model.addAttribute("page",menus);
-        model.addAttribute("motCle", mc);
         if ( id>0 && (action.equals("new") || action.equals("mod")) ) {
             model.addAttribute("menu",
             this.repoMenu.getReferenceById(id) );
@@ -70,18 +84,21 @@ public class MenuController {
     }
 
     @GetMapping("/menuDelete")
-    public String deleteMenu(Long id, int p, int s , String mc, RedirectAttributes attributes) {
+    public String deleteMenu(Long id, int p, int s, String priceRange, String mc,
+        RedirectAttributes attributes) 
+    {
         this.repoMenu.deleteById(id);
         attributes.addAttribute("act", "del");
+        attributes.addAttribute("priceRange", priceRange);
+        attributes.addAttribute("mc", mc);
         attributes.addAttribute("p", p);
         attributes.addAttribute("s", s);
-        attributes.addAttribute("mc", mc);
         return "redirect:/menus";
     }
 
     @GetMapping("/menuEdit")
     public String editerMenu(
-        String mc,int p,int s,
+        String mc,String priceRange,int p,int s,
         Long id,
         Model model
     ) 
@@ -95,7 +112,7 @@ public class MenuController {
             
             }
             else {
-                return "redirect:/menus";
+                return "redirect:/menus?error=menuNotFound";
             }
         }
         else 
@@ -104,6 +121,7 @@ public class MenuController {
         }
 
         model.addAttribute("plats",this.repoPlat.findAll());
+        model.addAttribute("priceRange",priceRange);
         model.addAttribute("mc", mc);
         model.addAttribute("p", p);
         model.addAttribute("s", s);
@@ -112,11 +130,12 @@ public class MenuController {
     }
     
     @PostMapping("/menuSave")
-    public String sauverPlat(@Valid Menu menu,BindingResult bindingResult, int p, int s, String mc, Model model) {
+    public String sauverPlat(@Valid Menu menu,BindingResult bindingResult, int p, int s,String priceRange, String mc, Model model) {
         if(bindingResult.hasErrors())
         {
             model.addAttribute("menu", menu);
             model.addAttribute("plats",this.repoPlat.findAll());
+            model.addAttribute("priceRange",priceRange);
             model.addAttribute("mc", mc);
             model.addAttribute("p", p);
             model.addAttribute("s", s);
@@ -124,6 +143,6 @@ public class MenuController {
         }
         this.repoMenu.save(menu);
         String action = (menu.getId()!=null?"mod":"new");
-        return "redirect:/menus?p="+p+"&s="+s+"&mc="+mc+"&act="+action+"&id="+menu.getId();
+        return "redirect:/menus?p="+p+"&s="+s+"&priceRange="+priceRange+"&mc="+mc+"&act="+action+"&id="+menu.getId();
     }
 }

@@ -14,7 +14,10 @@
             <form th:action="@{/platSave}" method="post" th:object="${plat}">
                 <input type="hidden" name="p" th:value="${p}">
                 <input type="hidden" name="s" th:value="${s}">
-                <input type="hidden" name="mc" th:value="${mc}">
+
+                <input type="hidden" name="cid" th:value="${cid}">
+                <input type="hidden" name="mincal" th:value="${mincal}">
+                <input type="hidden" name="maxcal" th:value="${maxcal}">
 
                 <input type="hidden" name="id" th:field="*{id}">
 
@@ -57,13 +60,14 @@
                     <label for="categorie">Catégorie:</label>
                     <select id="categorie" name="categorie" th:field="*{categorie}" required 
                            th:class="${#fields.hasErrors('categorie')} ? 'form-control is-invalid' : 'form-control'">
-                        <option value="" disabled selected>Choisir une catégorie</option>
+                        <option value="">Choisir une catégorie</option>
                         <option th:each="categorie : ${categories}" th:value="${categorie.id}" th:text="${categorie.nom}"></option>
                     </select>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('categorie')}" th:errors="*{categorie}"></div>
                 </div>
                 
                 <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+                <a th:href="@{/plats(p=${p},s=${s},cid=${cid},mincal=${mincal},maxcal=${maxcal})}" class="btn btn-secondary mt-3 ms-2">Annuler</a>
             </form>
 
         </div>

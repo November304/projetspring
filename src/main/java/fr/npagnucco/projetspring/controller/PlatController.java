@@ -57,7 +57,7 @@ public class PlatController {
         {
             plats = repoPlat.findAll(pageable);
         }
-            
+        
         model.addAttribute("categories", this.repoCategorie.findAll());
         model.addAttribute("plats", plats.getContent());
         model.addAttribute("page",plats);
@@ -123,7 +123,10 @@ public class PlatController {
     }
     
     @PostMapping("/platSave")
-    public String sauverPlat(int p, int s,Long cid, Long mincal, Long maxcal,@Valid Plat plat,BindingResult bindingResult,Model model, RedirectAttributes attributes) {
+    public String sauverPlat(int p, int s,Long cid, Long mincal, Long maxcal,
+        @Valid Plat plat,BindingResult bindingResult,Model model, 
+        RedirectAttributes attributes)
+    {
         if(bindingResult.hasErrors())
         {
             model.addAttribute("plat", plat);

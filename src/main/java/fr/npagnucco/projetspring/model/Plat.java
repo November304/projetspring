@@ -46,6 +46,7 @@ public class Plat {
 
     @ManyToOne
     @JoinColumn(name = "categorie_id")
+    @NotNull(message="La catégorie ne peut pas être vide")
     private Categorie categorie;
 
     @ManyToMany(mappedBy = "plats")

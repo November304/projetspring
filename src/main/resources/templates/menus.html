@@ -58,15 +58,34 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             Le menu a bien été supprimé
         </div>
-        <form action="#" th:action="@{/menus}" method="get" class="table">
-            <div class="d-flex align-items-center gap-3">
-                <input type="text" name="mc" id="search" class="form-control" th:value="${mc}" />
-                <input type="hidden" name="p" th:value="0" />
-                <input type="hidden" name="s" th:value="${page.size}" />
-                <button type="submit" class="btn btn-primary">Rechercher</button>
+        <form th:action="@{/menus}" method="get">
+            <div class="row align-items-end">
+                <div class="col-md-3">
+                    <label for="priceRange">Filtrer par prix :</label>
+                    <select name="priceRange" id="priceRange" class="form-control">
+                        <option value="" th:selected="${priceRange == null || priceRange == ''}">Tous</option>
+                        <option value="0-5" th:selected="${priceRange == '0-5'}">0 - 5</option>
+                        <option value="5-10" th:selected="${priceRange == '5-10'}">5 - 10</option>
+                        <option value="10-20" th:selected="${priceRange == '10-20'}">10 - 20</option>
+                        <option value="20-30" th:selected="${priceRange == '20-30'}">20 - 30</option>
+                        <option value="30-50" th:selected="${priceRange == '30-50'}">30 - 50</option>
+                        <option value="50-200" th:selected="${priceRange == '50-200'}">50+</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="search">Recherche : </label>
+                    <input type="text" name="mc" id="search" class="form-control" th:value="${mc}" />
+                </div>
+                <div class="col-md-2 d-flex gap-2">
+                    <input type="hidden" name="p" th:value="0" />
+                    <input type="hidden" name="s" th:value="${page.size}" />
+                    <button type="submit" class="btn btn-primary">Filtrer</button>
+                    <a th:href="@{/menus(s=${page.size},p=${page.number})}" class="btn btn-secondary">Réinitialiser</a>
+                </div>
             </div>
-        </form> 
-        <a th:href="@{/menuEdit(s=${page.size},p=${page.number},mc=${motCle})}" class="btn btn-primary">Ajouter un menu</a>
+        </form>
+        
+        <a th:href="@{/menuEdit(s=${page.size},p=${page.number},mc=${motCle})}" class="btn btn-primary my-3">Ajouter un menu</a>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -104,6 +123,8 @@
                     <tr class="plats-details" style="display: none;">
                         <td colspan="5">
                             <div class="ms-4">
+                                <strong>Description :</strong>
+                                <p th:text="${m.description}"></p>
                                 <strong>Plats :</strong>
                                 <ul>
                                     <li th:each="plat : ${m.plats}" 

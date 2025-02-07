@@ -34,7 +34,7 @@
 
                 <div class="form-group">
                     <label for="description">Description du menu:</label>
-                    <textarea id="description" name="description" th:field="*{description}" required 
+                    <textarea id="description" name="description" th:field="*{description}" 
                               th:class="${#fields.hasErrors('description')} ? 'form-control is-invalid' : 'form-control'"></textarea>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                 </div>
@@ -49,6 +49,7 @@
                 </div>
                 
                 <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+                <a th:href="@{/menu}" class="btn btn-secondary mt-3 ms-2">Annuler</a>
             </form>
 
         </div>

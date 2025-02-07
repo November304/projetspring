@@ -23,12 +23,12 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Size(min = 2, max = 60)
+    @NotNull(message="Le nom ne peut pas être vide")
+    @Size(min = 2, max = 60, message="Le nom du menu doit contenir entre 2 et 60 caractères")
     private String nom;
 
-    @NotNull
-    @DecimalMin("0.01")
+    @NotNull(message="Le prix ne peut pas être vide")
+    @DecimalMin(value="0.01",message="Le prix doit être positif et non nul")
     private double prix;
 
     private String description;

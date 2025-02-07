@@ -24,26 +24,37 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             Le plat a bien été supprimé
         </div>
-        <form th:action="@{/plats}" method="get" class="table">
-            <div class="d-flex align-items-center gap-3">
-                <label for="cid">Catégorie :</label>
-                    <select id="cid" name="cid" class="form-control">
-                        <option value="" disabled selected>Choisir une catégorie</option>
-                        <option th:each="categorie : ${categories}" th:value="${categorie.id}" th:text="${categorie.nom}"></option>
+        <form th:action="@{/plats}" method="get">
+            <div class="row align-items-end">
+                <div class="col-md-4">
+                    <label for="cid" class="form-label">Catégorie :</label>
+                    <select id="cid" name="cid" class="form-select">
+                        <option value="" disabled selected>Toutes les catégories</option>
+                        <option th:each="categorie : ${categories}" 
+                                th:value="${categorie.id}" 
+                                th:text="${categorie.nom}" 
+                                th:selected="${categorie.id == cid}">
+                        </option>
                     </select>
-                <label for="mincal">Calories min :</label>
-                <input type="number" name="mincal" id="mincal" class="form-control" th:value="${mincal}" />
-                
-                <label for="maxcal">Calories max :</label>
-                <input type="number" name="maxcal" id="maxcal" class="form-control" th:value="${maxcal}" />
-                
-                <input type="hidden" name="p" th:value="0" />
-                <input type="hidden" name="s" th:value="${page.size}" />
-                
-                <button type="submit" class="btn btn-primary">Filtrer</button>
+                </div>
+                <div class="col-md-3">
+                    <label for="mincal" class="form-label">Calories min :</label>
+                    <input type="number" name="mincal" id="mincal" class="form-control" th:value="${mincal}" />
+                </div>
+                <div class="col-md-3">
+                    <label for="maxcal" class="form-label">Calories max :</label>
+                    <input type="number" name="maxcal" id="maxcal" class="form-control" th:value="${maxcal}" />
+                </div>
+                <div class="col-md-2 d-flex gap-2">
+                    <input type="hidden" name="p" th:value="0" />
+                    <input type="hidden" name="s" th:value="${page.size}" />
+                    <button type="submit" class="btn btn-primary">Filtrer</button>
+                    <a th:href="@{/plats(s=${page.size},p=${page.number})}" class="btn btn-secondary">Réinitialiser</a>
+                </div>
             </div>
         </form>
-        <a th:href="@{/platEdit(s=${page.size},p=${page.number},cid=${cid},mincal=${mincal},maxcal=${maxcal})}" class="btn btn-primary">Ajouter un plat</a>
+
+        <a th:href="@{/platEdit(s=${page.size},p=${page.number},cid=${cid},mincal=${mincal},maxcal=${maxcal})}" class="btn btn-primary my-3">Ajouter un plat</a>
         
         <table class="table table-hover">
             <thead>
