@@ -4,9 +4,8 @@
     <title>Modification d'un menu</title>
 </head>
 <body>
-    <nav th:replace="~{_layout.html:: menu}"></nav>
+    <nav th:replace="~{_layout.html::menu}"></nav>
     <div class="container mt-5">
-
         <div class="card border-light m-2 p-2">
             <h1 th:if="${menu.id==null}" class="card-header">Création d'un menu</h1>
             <h1 th:if="${menu.id!=null}" class="card-header">Modification d'un menu</h1>
@@ -15,7 +14,6 @@
                 <input type="hidden" name="p" th:value="${p}">
                 <input type="hidden" name="s" th:value="${s}">
                 <input type="hidden" name="mc" th:value="${mc}">
-
                 <input type="hidden" name="id" th:field="*{id}">
 
                 <div class="form-group">
@@ -39,22 +37,90 @@
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                 </div>
 
+                <!-- Filtres pour les plats -->
                 <div class="form-group">
-                    <label for="plats">Plats du menu:</label>
-                    <select id="plats" name="plats" th:field="*{plats}" multiple 
-                            th:class="${#fields.hasErrors('plats')} ? 'form-control is-invalid' : 'form-control'">
-                        <option th:each="plat : ${plats}" th:value="${plat.id}" th:text="${plat.nom}"></option>
-                    </select>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('plats')}" th:errors="*{plats}"></div>
+                    <label for="platsFilterInput">Filtrer les plats par nom :</label>
+                    <input type="text" id="platsFilterInput" class="form-control" placeholder="Rechercher un plat...">
                 </div>
-                
+                <div class="form-group">
+                    <label for="categorieFilterSelect">Filtrer par catégorie :</label>
+                    <select id="categorieFilterSelect" class="form-control">
+                        <option value="">Toutes</option>
+                        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.nom}"></option>
+                    </select>
+                </div>
+                <div class="row g-3 align-items-center">
+                    <div class="col-6">
+                        <label for="minCaloriesInput">Calories min :</label>
+                        <input type="number" id="minCaloriesInput" class="form-control" placeholder="Calories min">
+                    </div>
+                    <div class="col-6">
+                        <label for="maxCaloriesInput">Calories max :</label>
+                        <input type="number" id="maxCaloriesInput" class="form-control" placeholder="Calories max">
+                    </div>
+                </div>
+
+                <div id="platsContainer" class="mt-3 row">
+                    <div class="col-md-6 mb-2" th:each="plat : ${plats}">
+                        <div class="card">
+                            <span hidden th:id="'categorie-'+${plat.id}" th:text="${plat.categorie.id}"></span>
+                            <span hidden th:id="'calories-'+${plat.id}" th:text="${plat.nb_calories}"></span>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${plat.nom}"></h5>
+                                <p class="card-text" th:text="'Catégorie : ' + ${plat.categorie.nom}"></p>
+                                <p class="card-text">Calories : <span th:text="${plat.nb_calories}"></span></p>
+                                <p class="card-text">
+                                    Glucides : <span th:text="${plat.nb_glucides}"></span>,
+                                    Lipides : <span th:text="${plat.nb_lipides}"></span>,
+                                    Protéines : <span th:text="${plat.nb_proteines}"></span>
+                                </p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" th:id="'plat-'+${plat.id}"
+                                           th:name="plats" th:value="${plat.id}" th:field="*{plats}">
+                                    <label class="form-check-label" th:for="'plat-'+${plat.id}">
+                                        Sélectionner
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
-                <a th:href="@{/menu}" class="btn btn-secondary mt-3 ms-2">Annuler</a>
+                <a th:href="@{/menus(p=${p},s=${s},mc=${mc},priceRange=${priceRange})}" class="btn btn-secondary mt-3 ms-2">Annuler</a>
             </form>
-
         </div>
-        
-
     </div>
+
+    <script>
+        function filterPlats() {
+            var nameFilter = document.getElementById('platsFilterInput').value.toLowerCase();
+            var categorieFilter = document.getElementById('categorieFilterSelect').value;
+            var minCalories = parseFloat(document.getElementById('minCaloriesInput').value);
+            var maxCalories = parseFloat(document.getElementById('maxCaloriesInput').value);
+            
+            var columns = document.querySelectorAll('#platsContainer .col-md-6');
+            
+            columns.forEach(function(column) {
+                var title = column.querySelector('.card-title').textContent.toLowerCase();
+
+                var cardCategoryElem = column.querySelector('span[id^="categorie-"]');
+                var cardCaloriesElem = column.querySelector('span[id^="calories-"]');
+                var cardCategory = cardCategoryElem ? cardCategoryElem.textContent : '';
+                var cardCalories = cardCaloriesElem ? parseFloat(cardCaloriesElem.textContent) : 0;
+
+                var matchesName = title.includes(nameFilter);
+                var matchesCategorie = (categorieFilter === '' || cardCategory === categorieFilter);
+                var matchesMinCalories = isNaN(minCalories) || cardCalories >= minCalories;
+                var matchesMaxCalories = isNaN(maxCalories) || cardCalories <= maxCalories;
+                
+                column.style.display = (matchesName && matchesCategorie && matchesMinCalories && matchesMaxCalories) ? 'block' : 'none';
+            });
+        }
+
+        document.getElementById('platsFilterInput').addEventListener('input', filterPlats);
+        document.getElementById('categorieFilterSelect').addEventListener('change', filterPlats);
+        document.getElementById('minCaloriesInput').addEventListener('input', filterPlats);
+        document.getElementById('maxCaloriesInput').addEventListener('input', filterPlats);
+    </script>
 </body>
 </html>

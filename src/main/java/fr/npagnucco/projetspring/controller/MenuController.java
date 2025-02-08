@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.npagnucco.projetspring.model.Menu;
+import fr.npagnucco.projetspring.repository.CategorieRepository;
 import fr.npagnucco.projetspring.repository.MenuRepository;
 import fr.npagnucco.projetspring.repository.PlatRepository;
 import jakarta.validation.Valid;
@@ -26,10 +27,12 @@ import jakarta.validation.Valid;
 public class MenuController {
     private final MenuRepository repoMenu;
     private final PlatRepository repoPlat;
+    private final CategorieRepository repoCategorie;
 
-    public MenuController(MenuRepository menuRepository, PlatRepository platRepository) {
+    public MenuController(MenuRepository menuRepository, PlatRepository platRepository, CategorieRepository categorieRepository) {
         this.repoMenu = menuRepository;
         this.repoPlat = platRepository;
+        this.repoCategorie = categorieRepository;
     }
 
     @GetMapping("/menus")
@@ -40,6 +43,7 @@ public class MenuController {
             @RequestParam(defaultValue = "5") int s, 
             @RequestParam(name="act",defaultValue="") String action,
             @RequestParam(defaultValue="0") Long id,
+            @RequestParam(defaultValue="") String error,
             Model model
             ) 
     {
@@ -79,6 +83,11 @@ public class MenuController {
         } else if ( ! action.equals("del") ) {
             action = "";
         }
+        if(!error.isEmpty())
+        {
+            model.addAttribute("erreur", error);
+        }
+
         model.addAttribute("action", action);
         return "menus";
     }
@@ -119,7 +128,8 @@ public class MenuController {
         {
             model.addAttribute("menu", new Menu());
         }
-
+        
+        model.addAttribute("categories", this.repoCategorie.findAll());
         model.addAttribute("plats",this.repoPlat.findAll());
         model.addAttribute("priceRange",priceRange);
         model.addAttribute("mc", mc);

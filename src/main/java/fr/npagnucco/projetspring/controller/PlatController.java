@@ -43,6 +43,7 @@ public class PlatController {
         @RequestParam(defaultValue = "") Long maxcal,
         @RequestParam(name="act",defaultValue="") String action,
         @RequestParam(defaultValue="0") Long id,
+        @RequestParam(defaultValue="") String error,
         Model model
     ) 
     {
@@ -69,6 +70,11 @@ public class PlatController {
             this.repoPlat.getReferenceById(id) );
         } else if ( ! action.equals("del") ) {
             action = "";
+        }
+
+        if(!error.isEmpty())
+        {
+            model.addAttribute("erreur", error);
         }
         model.addAttribute("action", action);
         return "plats";

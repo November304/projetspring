@@ -64,7 +64,7 @@
         </div>
         <form th:action="@{/menus}" method="get">
             <div class="row align-items-end">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label for="priceRange">Filtrer par prix :</label>
                     <select name="priceRange" id="priceRange" class="form-control">
                         <option value="" th:selected="${priceRange == null || priceRange == ''}">Tous</option>
@@ -80,7 +80,7 @@
                     <label for="search">Recherche : </label>
                     <input type="text" name="mc" id="search" class="form-control" th:value="${mc}" />
                 </div>
-                <div class="col-md-2 d-flex gap-2">
+                <div class="col-md-3 d-flex gap-2">
                     <input type="hidden" name="p" th:value="0" />
                     <input type="hidden" name="s" th:value="${page.size}" />
                     <button type="submit" class="btn btn-primary">Filtrer</button>
@@ -89,7 +89,7 @@
             </div>
         </form>
         
-        <a th:href="@{/menuEdit(s=${page.size},p=${page.number},mc=${motCle})}" class="btn btn-primary my-3">Ajouter un menu</a>
+        <a th:href="@{/menuEdit(s=${page.size},p=${page.number},mc=${mc},priceRange=${priceRange})}" class="btn btn-primary my-3">Ajouter un menu</a>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -113,12 +113,12 @@
                         <td>
                             <a class="btn btn-primary" 
                                onclick="event.stopPropagation()"
-                               th:href="@{/menuEdit(id=${m.id},s=${page.size},p=${page.number},mc=${motCle})}">
+                               th:href="@{/menuEdit(id=${m.id},s=${page.size},p=${page.number},mc=${mc},priceRange=${priceRange})}">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
                             <a class="btn btn-warning" 
                                onclick="event.stopPropagation(); confDelMenu(event)"
-                               th:href="@{/menuDelete(id=${m.id},s=${page.size},p=0,mc=${motCle})}">
+                               th:href="@{/menuDelete(id=${m.id},s=${page.size},p=0,mc=${mc},priceRange=${priceRange})}">
                                 <i class="fa-regular fa-trash-can"></i>
                             </a>
                         </td>
@@ -145,17 +145,17 @@
         <nav>
             <ul class="pagination">
             <li th:class="${page.first ? 'page-item disabled' : 'page-item'}">
-                <a class="page-link" th:href="@{/menus(s=${page.size},p=${page.number-1},mc=${motCle})}" aria-label="Préc.">
+                <a class="page-link" th:href="@{/menus(s=${page.size},p=${page.number-1},mc=${mc},priceRange=${priceRange})}" aria-label="Préc.">
                 <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
 
             <li th:class="page-item" th:each="i : ${#numbers.sequence(0,page.totalPages-1)}" th:classappend="${i == page.number ? 'active' : ''}">
-                <a class="page-link" th:href="@{/menus(s=${page.size},p=${i},mc=${motCle})}" th:text="${i+1}"> 1</a>
+                <a class="page-link" th:href="@{/menus(s=${page.size},p=${i},mc=${mc},priceRange=${priceRange})}" th:text="${i+1}"> 1</a>
             </li>
 
             <li th:class="${page.last ? 'page-item disabled' : 'page-item'}">
-                <a class="page-link" th:href="@{/menus(s=${page.size},p=${page.number+1},mc=${motCle})}" aria-label="Suiv.">
+                <a class="page-link" th:href="@{/menus(s=${page.size},p=${page.number+1},mc=${mc},priceRange=${priceRange})}" aria-label="Suiv.">
                 <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
