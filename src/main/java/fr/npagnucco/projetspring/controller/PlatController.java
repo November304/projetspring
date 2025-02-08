@@ -104,7 +104,7 @@ public class PlatController {
                 model.addAttribute("plat", optPlat.get());
             }
             else {
-                return "redirect:/plats"; //TODO : Rajouter message d'erreur
+                return "redirect:/plats?error=NotFound";
             }
         }
         else 

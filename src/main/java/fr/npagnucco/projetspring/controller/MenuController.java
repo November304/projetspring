@@ -112,7 +112,7 @@ public class MenuController {
             
             }
             else {
-                return "redirect:/menus?error=menuNotFound";
+                return "redirect:/menus?error=NotFound";
             }
         }
         else 

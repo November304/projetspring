@@ -58,6 +58,10 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             Le menu a bien été supprimé
         </div>
+        <div class="alert alert-dismissible alert-warning" th:if="${erreur=='NotFound'}">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            Ce menu n'existe pas
+        </div>
         <form th:action="@{/menus}" method="get">
             <div class="row align-items-end">
                 <div class="col-md-3">

@@ -24,6 +24,10 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             Le plat a bien été supprimé
         </div>
+        <div class="alert alert-dismissible alert-warning" th:if="${erreur=='NotFound'}">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            Ce plat n'existe pas
+        </div>
         <form th:action="@{/plats}" method="get">
             <div class="row align-items-end">
                 <div class="col-md-4">

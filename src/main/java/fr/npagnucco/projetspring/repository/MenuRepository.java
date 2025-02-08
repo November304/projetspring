@@ -13,6 +13,6 @@ import fr.npagnucco.projetspring.model.Menu;
  * @author nathan
  */
 public interface MenuRepository extends JpaRepository<Menu, Long>{
-    @Query("SELECT m FROM Menu m WHERE (:minPrice IS NULL OR m.prix >= :minPrice) AND (:maxPrice IS NULL OR m.prix <= :maxPrice) AND (:nomMenu IS NULL OR m.nom LIKE :nomMenu)")
-    public Page<Menu> findByFiltre(@Param("minPrice") Double minPrice,@Param("maxPrice") Double maxPrice,@Param("nomMenu") String nomMenu, Pageable pageable);
+    @Query("SELECT m FROM fr.npagnucco.projetspring.model.Menu m WHERE (:minPrice is NULL OR m.prix >= :minPrice) AND (:maxPrice is NULL OR m.prix <= :maxPrice) AND (:nomMenu is NULL OR m.nom LIKE %:nomMenu%)")
+    Page<Menu> findByFiltre(@Param("minPrice") Double minPrice, @Param("maxPrice") Double maxPrice, @Param("nomMenu") String nomMenu, Pageable pageable);
 }
