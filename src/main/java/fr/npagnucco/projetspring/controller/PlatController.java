@@ -36,8 +36,8 @@ public class PlatController {
 
     @GetMapping("/plats")
     public String listePlats(
-        @RequestParam(defaultValue = "0") int p,
-        @RequestParam(defaultValue = "10") int s,
+        @RequestParam(defaultValue = "0") Integer p,
+        @RequestParam(defaultValue = "10") Integer s,
         @RequestParam(defaultValue = "") Long cid,
         @RequestParam(defaultValue = "") Long mincal,
         @RequestParam(defaultValue = "") Long maxcal,
@@ -82,7 +82,7 @@ public class PlatController {
 
     @GetMapping("/platDelete")
     public String deletePlat(Long id, 
-        int p, int s, Long cid, Long mincal, Long maxcal,
+        Integer p, Integer s, Long cid, Long mincal, Long maxcal,
         RedirectAttributes attributes
     ) {
         this.repoPlat.deleteById(id);
@@ -97,7 +97,7 @@ public class PlatController {
 
     @GetMapping("/platEdit")
     public String editerPlat(
-        int p,int s,Long cid, Long mincal, Long maxcal,
+        Integer p,Integer s,Long cid, Long mincal, Long maxcal,
         Long id,
         Model model
     ) 
@@ -129,7 +129,7 @@ public class PlatController {
     }
     
     @PostMapping("/platSave")
-    public String sauverPlat(int p, int s,Long cid, Long mincal, Long maxcal,
+    public String sauverPlat(Integer p, Integer s,Long cid, Long mincal, Long maxcal,
         @Valid Plat plat,BindingResult bindingResult,Model model, 
         RedirectAttributes attributes)
     {

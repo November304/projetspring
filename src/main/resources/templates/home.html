@@ -1,13 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head th:replace="~{_layout.html::header(~{::title}, _, _)}">
-    <title>Accueil Projet Nathan Pagnucco</title>
+    <title>Gestion de Menus - Accueil</title>
 </head>
 <body>
     <nav th:replace="~{_layout.html:: menu}"></nav>
+    
     <div class="container mt-5">
-        <h1>Bienvenue appli projet Spring 2025</h1>
-        <p>Pagnucco Nathan</p>
+        <div class="text-center mb-5">
+            <h1 class="display-4">Gestion de Menus & Plats</h1>
+            <p class="lead">Une solution complète pour gérer vos menus et plats en toute simplicité</p>
+        </div>
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                <i class="bi bi-card-list mb-3" style="font-size: 2rem;"></i>
+                <h3 class="card-title">Gestion des Plats</h3>
+                <p class="card-text">Créez, modifiez et organisez votre catalogue de plats avec leurs valeurs nutritionnelles.</p>
+                <a th:href="@{/plats}" class="btn btn-primary">Voir les plats</a>
+                </div>
+            </div>
+            </div>
+            
+            <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                <i class="bi bi-collection mb-3" style="font-size: 2rem;"></i>
+                <h3 class="card-title">Menus</h3>
+                <p class="card-text">Composez des menus équilibrés en associant vos meilleurs plats.</p>
+                <a th:href="@{/menus}" class="btn btn-primary">Gérer les menus</a>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Statistiques</h4>
+                        <div class="list-group">
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                Nombre total de plats
+                                <span class="badge bg-primary rounded-pill" th:text="${nbPlats ?: '0'}">0</span>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                Menus disponibles
+                                <span class="badge bg-primary rounded-pill" th:text="${nbMenus ?: '0'}">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Actions rapides</h4>
+                        <div class="d-grid gap-2">
+                            <a th:href="@{/platEdit}" class="btn btn-outline-primary">Ajouter un nouveau plat</a>
+                            <a th:href="@{/menuEdit}" class="btn btn-outline-primary">Créer un nouveau menu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center mt-5 mb-4">
+            <p>Développé par Pagnucco Nathan - Projet Spring 2025</p>
+        </footer>
     </div>
 </body>
 </html>

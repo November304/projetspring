@@ -6,6 +6,76 @@
         function confDelPlat(e){
             if(!confirm('Voulez-vous vraiment supprimer ce plat ?')) e.preventDefault();
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.plat-row').forEach(row => {
+                row.addEventListener('click', function () {
+                    const detailsRow = this.nextElementSibling;
+                    const arrow = this.querySelector('.toggle-arrow');
+    
+                    // Toggle affichage de la ligne des détails
+                    if (detailsRow.style.display === 'none') {
+                        detailsRow.style.display = 'table-row';
+                        arrow.classList.remove('fa-chevron-right');
+                        arrow.classList.add('fa-chevron-down');
+    
+                        if (!detailsRow.dataset.chartCreated) {
+                            detailsRow.dataset.chartCreated = "true";
+                            
+                            //Données
+                            const totalCalories = parseFloat(this.dataset.calories);
+                            const glucides = parseFloat(this.dataset.glucides) * 4;
+                            const lipides = parseFloat(this.dataset.lipides) * 9;
+                            const proteines = parseFloat(this.dataset.proteines) * 4;
+                            const autre = Math.max(0, totalCalories - (glucides + lipides + proteines));
+    
+                            const canvas = detailsRow.querySelector('.chart-canvas');
+                            const ctx = canvas.getContext('2d');
+
+                            //En fonction du thème on change les couleurs des labels pour une meilleure visibilité
+                            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                            const isDarkMode = savedTheme === 'dark';
+                            const titleColor = isDarkMode ? '#ddd' : '#333';
+    
+                            new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: ['Glucides', 'Lipides', 'Protéines', 'Autre'],
+                                    datasets: [{
+                                        data: [glucides, lipides, proteines, autre],
+                                        backgroundColor: ['#ffcc00', '#ff6666', '#66ccff', '#cccccc']
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    plugins: {
+                                        legend: {
+                                            position: 'bottom',
+                                            labels: {
+                                                color: titleColor
+                                            }
+                                        },
+                                        title: {
+                                            display: true,
+                                            text: 'Répartition des Calories 🍽️', // Titre cool 😎
+                                            font: {
+                                                size: 16,
+                                                weight: 'bold'
+                                            },
+                                            color: titleColor
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        detailsRow.style.display = 'none';
+                        arrow.classList.remove('fa-chevron-down');
+                        arrow.classList.add('fa-chevron-right');
+                    }
+                });
+            });
+        });
+       
     </script>
 </head>
 <body>
@@ -74,19 +144,43 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="p : ${plats}">
-                    <td th:text="${p.id}"></td>
-                    <td th:text="${p.nom}"></td>
-                    <td th:text="${p.nb_calories}"></td>
-                    <td th:text="${p.nb_glucides}"></td>
-                    <td th:text="${p.nb_lipides}"></td>
-                    <td th:text="${p.nb_proteines}"></td>
-                    <td th:text="${p.categorie.nom}"></td>
-                    <td>
-                        <a class="btn btn-primary" th:href="@{/platEdit(id=${p.id},s=${page.size},p=${page.number},cid=${cid},mincal=${mincal},maxcal=${maxcal})}"><i class="fa-regular fa-pen-to-square"></i></a>
-                        <a class="btn btn-warning" onclick="confDelPlat(event)" th:href="@{/platDelete(id=${p.id},s=${page.size},p=${0},cid=${cid},mincal=${mincal},maxcal=${maxcal})}"><i class="fa-regular fa-trash-can"></i></a>
-                    </td>
-                </tr>
+                <th:block th:each="p : ${plats}">
+                    <tr class="plat-row" style="cursor: pointer;"
+                        th:data-id="${p.id}"
+                        th:data-calories="${p.nb_calories}"
+                        th:data-glucides="${p.nb_glucides}"
+                        th:data-lipides="${p.nb_lipides}"
+                        th:data-proteines="${p.nb_proteines}">
+                        <td th:text="${p.id}"></td>
+                        <td>
+                            <i class="fa-solid fa-chevron-right toggle-arrow" style="margin-right: 0.5rem;"></i>
+                            <span th:text="${p.nom}"></span>
+                        </td>
+                        <td th:text="${p.nb_calories}"></td>
+                        <td th:text="${p.nb_glucides}"></td>
+                        <td th:text="${p.nb_lipides}"></td>
+                        <td th:text="${p.nb_proteines}"></td>
+                        <td th:text="${p.categorie.nom}"></td>
+                        <td>
+                            <a class="btn btn-primary" onclick="event.stopPropagation();"
+                            th:href="@{/platEdit(id=${p.id})}">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            <a class="btn btn-warning" onclick="event.stopPropagation(); confDelPlat(event);"
+                            th:href="@{/platDelete(id=${p.id})}">
+                            <i class="fa-regular fa-trash-can"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="plat-details" style="display: none;">
+                        <td colspan="8">
+                            <div style="width: 300px; height: 300px; margin: auto;">
+                                <canvas class="chart-canvas"></canvas>
+                            </div>
+                        </td>                        
+                    </tr>   
+                </th:block>
+                
             </tbody>
         </table>
         <div th:if="${page.totalPages>1}">

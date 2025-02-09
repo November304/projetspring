@@ -39,8 +39,8 @@ public class MenuController {
     public String listeMenus(
             @RequestParam(required = false) String priceRange,
             @RequestParam(required = false) String mc,
-            @RequestParam(defaultValue = "0") int p,
-            @RequestParam(defaultValue = "5") int s, 
+            @RequestParam(defaultValue = "0") Integer p,
+            @RequestParam(defaultValue = "5") Integer s, 
             @RequestParam(name="act",defaultValue="") String action,
             @RequestParam(defaultValue="0") Long id,
             @RequestParam(defaultValue="") String error,
@@ -93,7 +93,7 @@ public class MenuController {
     }
 
     @GetMapping("/menuDelete")
-    public String deleteMenu(Long id, int p, int s, String priceRange, String mc,
+    public String deleteMenu(Long id, Long p, Long s, String priceRange, String mc,
         RedirectAttributes attributes) 
     {
         this.repoMenu.deleteById(id);
@@ -107,7 +107,7 @@ public class MenuController {
 
     @GetMapping("/menuEdit")
     public String editerMenu(
-        String mc,String priceRange,int p,int s,
+        String mc,String priceRange,Long p,Long s,
         Long id,
         Model model
     ) 
@@ -140,7 +140,7 @@ public class MenuController {
     }
     
     @PostMapping("/menuSave")
-    public String sauverPlat(@Valid Menu menu,BindingResult bindingResult, int p, int s,String priceRange, String mc, Model model) {
+    public String sauverPlat(@Valid Menu menu,BindingResult bindingResult, Long p, Long s,String priceRange, String mc, Model model) {
         if(bindingResult.hasErrors())
         {
             model.addAttribute("menu", menu);
