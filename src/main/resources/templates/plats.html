@@ -129,8 +129,10 @@
         </form>
 
         <a th:href="@{/platEdit(s=${page.size},p=${page.number},cid=${cid},mincal=${mincal},maxcal=${maxcal})}" class="btn btn-primary my-3">Ajouter un plat</a>
-        
-        <table class="table table-hover">
+        <div th:if="${#lists.isEmpty(plats)}" class="alert alert-info">
+            Aucun plat disponible.
+        </div>
+        <table class="table table-hover"th:if="${!#lists.isEmpty(plats)}">
             <thead>
                 <tr>
                     <th>Id</th>
